@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,8 +32,10 @@ public class Consultar_servicios extends Activity {
     private Spinner spinner;
     private TextView bienvenida,servicio,ruta,datetime,trasladista,cliente,pax,set;
     private String get,objetoseleccionado,act2;
-    private Button btnincidencias,btnfinalizarservicio;
+    private Button btnincidencias,btnfinalizarservicio,btntrazaruta;
     private Bundle b;
+    Ipvariable ip=new Ipvariable();
+    final String ipconfig=ip.direccionIp;
     @Override
         protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,107 +59,174 @@ public class Consultar_servicios extends Activity {
         pax=(TextView)findViewById(R.id.txtpax);
         btnincidencias=(Button)findViewById(R.id.btnincidencias);
         btnfinalizarservicio=(Button)findViewById(R.id.btnfinalizar);
+        btntrazaruta=(Button)findViewById(R.id.btntrazar);
         btnincidencias.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* Integer mesA=Integer.parseInt(datetime.getText().toString().substring(5,7));
-                Integer mesS=Integer.parseInt(getdatetimesistema().substring(5, 7));
-                Integer diaA=Integer.parseInt(datetime.getText().toString().substring(8,10));
-                Integer diaS=Integer.parseInt(getdatetimesistema().substring(8,10));
-                Integer anoA=Integer.parseInt(datetime.getText().toString().substring(0,4));
-                Integer anoS=Integer.parseInt(getdatetimesistema().substring(0,4));
-                set.setText(""+anoA+"-"+anoS);
-                if(mesA==mesS && diaA==diaS && anoA==anoS){
-*/
-                act2=set.getText().toString();
-                Intent c = new Intent(Consultar_servicios.this,Incidencias.class);
-                b=new Bundle();
-                b.putString("idservicio",act2);
-                c.putExtras(b);
-                startActivity(c);
-                finish();
-           /* }else{
+         @Override
+         public void onClick(View v) {
+
+
+             Integer mesA = Integer.parseInt(datetime.getText().toString().substring(5, 7));
+             Integer mesS = Integer.parseInt(getdatetimesistema().substring(5, 7));
+             Integer diaA = Integer.parseInt(datetime.getText().toString().substring(8, 10));
+             Integer diaS = Integer.parseInt(getdatetimesistema().substring(8, 10));
+             Integer anoA = Integer.parseInt(datetime.getText().toString().substring(2, 4));
+             Integer anoS = Integer.parseInt(getdatetimesistema().substring(2, 4));
+             Integer horaA = Integer.parseInt(getdatetimesistema().substring(11, 13));
+             Integer horaS = Integer.parseInt(datetime.getText().toString().substring(11, 13));
+             Integer minA = Integer.parseInt(getdatetimesistema().substring(14, 16));
+             Integer minS = Integer.parseInt(datetime.getText().toString().substring(14, 16));
+
+             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Consultar_servicios.this);
+
+             alertDialogBuilder.setTitle("Advertencia");
+             alertDialogBuilder.setMessage("No puede registrar incidencias ");
+
+
+             alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+                 public void onClick(DialogInterface dialog, int id) {
+                     dialog.cancel();
+                 }
+
+             });
+
+
+
+             if (diaA == diaS && mesA==mesS && anoA==anoS ) {
+                 act2 = set.getText().toString();
+                 Intent c = new Intent(Consultar_servicios.this, Incidencias.class);
+                 b = new Bundle();
+                 b.putString("idservicio", act2);
+                 c.putExtras(b);
+                 startActivity(c);
+                 finish();
+
+             }else{
+                 AlertDialog alertDialog = alertDialogBuilder.create();
+
+                 alertDialog.show();
+
+
+
+             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         }
+         }
+    );
+        btnfinalizarservicio.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Integer mesA = Integer.parseInt(datetime.getText().toString().substring(5, 7));
+                    Integer mesS = Integer.parseInt(getdatetimesistema().substring(5, 7));
+                    Integer diaA = Integer.parseInt(datetime.getText().toString().substring(8, 10));
+                    Integer diaS = Integer.parseInt(getdatetimesistema().substring(8, 10));
+                    Integer anoA = Integer.parseInt(datetime.getText().toString().substring(2, 4));
+                    Integer anoS = Integer.parseInt(getdatetimesistema().substring(2, 4));
+                    Integer horaA = Integer.parseInt(getdatetimesistema().substring(11, 13));
+                    Integer horaS = Integer.parseInt(datetime.getText().toString().substring(11, 13));
+                    Integer minA = Integer.parseInt(getdatetimesistema().substring(14, 16));
+                    Integer minS = Integer.parseInt(datetime.getText().toString().substring(14, 16));
+
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Consultar_servicios.this);
 
                     alertDialogBuilder.setTitle("Advertencia");
-                    alertDialogBuilder.setMessage("Todavia no puede registrar incidencias");
+                    alertDialogBuilder.setMessage("¿ Esta seguro de finalizar el servicio ?");
+
 
                     alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int id) {
-
-                            dialog.cancel();
+                            Toast.makeText(getApplicationContext(), finalizarservicio(set.getText().toString()), Toast.LENGTH_SHORT).show();
+                            btnfinalizarservicio.setEnabled(false);
+                            btnincidencias.setEnabled(true);
                         }
 
                     });
-                }*/
-
-        }});
-        btnfinalizarservicio.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                   /* Integer mesA=Integer.parseInt(datetime.getText().toString().substring(5,7));
-                    Integer mesS=Integer.parseInt(getdatetimesistema().substring(5, 7));
-                    Integer diaA=Integer.parseInt(datetime.getText().toString().substring(8,10));
-                    Integer diaS=Integer.parseInt(getdatetimesistema().substring(8,10));
-                    Integer anoA=Integer.parseInt(datetime.getText().toString().substring(0,4));
-                    Integer anoS=Integer.parseInt(getdatetimesistema().substring(0,4));
-                    Integer horaA=Integer.parseInt(getdatetimesistema().substring(11,13));
-                    Integer horaS=Integer.parseInt(datetime.getText().toString().substring(11,13));
-                    Integer minA=Integer.parseInt(getdatetimesistema().substring(14,16));
-                    Integer minS=Integer.parseInt(datetime.getText().toString().substring(14,16));
-                    if(mesA==mesS && diaA==diaS && anoA==anoS && horaA==horaS && minS<minA ||mesA==mesS && diaA==diaS && anoA==anoS && horaA==horaS+1 && minS>minA ){
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Consultar_servicios.this);
-
-                        alertDialogBuilder.setTitle("Advertencia");
-                        alertDialogBuilder.setMessage("¿Esta seguro de finalizar el servicio "+set.getText()+"?");
-
-                        alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int id) {
-*/
-                                Toast.makeText(getApplicationContext(),finalizarservicio(set.getText().toString()), Toast.LENGTH_SHORT).show();
-                                btnincidencias.setEnabled(false);
-                                btnfinalizarservicio.setEnabled(false);
-                           /* }
-
-                        });
-
-                        alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-
-                                    public void onClick(DialogInterface dialog, int id) {
-
-                                        dialog.cancel();
 
 
-                                    }
-                                });
+                    alertDialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                        public void onClick(DialogInterface dialog, int id) {
+
+
+                            dialog.cancel();
+
+                        }
+
+                    });
+
+                    AlertDialog.Builder alertDialogBuildere = new AlertDialog.Builder(Consultar_servicios.this);
+
+                    alertDialogBuildere.setTitle("Advertencia");
+                    alertDialogBuildere.setMessage("Todavia no puede finalizar el servicio");
+
+                    alertDialogBuildere.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            dialog.cancel();
+
+                        }
+
+                    });
+                    if (diaA == diaS && mesA==mesS && anoA==anoS && horaA==horaS && minA>minS ||diaA == diaS && mesA==mesS && anoA==anoS && horaA==horaS+1 && minA<minS ) {
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
                         alertDialog.show();
+
 
 
                     }else{
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Consultar_servicios.this);
+                        AlertDialog alertDialog = alertDialogBuildere.create();
 
-                        alertDialogBuilder.setTitle("Advertencia");
-                        alertDialogBuilder.setMessage("Todavia no puede finalizar el servicio.");
-
-                        alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int id) {
-
-
-                            }
-
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();
-                    }*/
 
+
+
+                    }
                 }
-        }
-        );
+
+                        }
+                        );
+
+        btntrazaruta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /*String directionweburl = "http://maps.google.com/maps?daddr=-12.075581404063755,-77.05321311950684&saddr=-12.063998611017295,-77.09578514099121";
+
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(directionweburl));
+                myIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(myIntent);*/
+
+                String idservicio=getidservicio(objetoseleccionado);
+                String cadena=getlatitudlongitud(idservicio);
+                String directionweburl = "http://maps.google.com/maps?daddr="+cadena;
+
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(directionweburl));
+                myIntent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                startActivity(myIntent);
+
+            }
+        });
+
+
+
 
         getNombrebienvenida tarea=new getNombrebienvenida();
         tarea.execute(idchofer);
@@ -228,7 +298,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -274,7 +344,7 @@ public class Consultar_servicios extends Activity {
             HttpClient httpClient = new DefaultHttpClient();
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/lista/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/lista/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -335,7 +405,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/HoraFecha/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/HoraFecha/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -374,7 +444,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/idservicio/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/idservicio/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -411,7 +481,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/OrigenDestino/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/OrigenDestino/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -450,7 +520,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/IdDescripcionservicio/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/IdDescripcionservicio/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -487,7 +557,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/Descripcionservicio/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/Descripcionservicio/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -526,7 +596,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/idtrasl/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/idtrasl/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -563,7 +633,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/nombretrasl/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/nombretrasl/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -602,7 +672,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/idPax/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/idPax/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -639,7 +709,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/Nombrepax/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/Nombrepax/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -677,7 +747,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/getIdCliente/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/getIdCliente/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -714,7 +784,7 @@ public class Consultar_servicios extends Activity {
             String id = params[0];
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/getNombreCliente/"+id);
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/getNombreCliente/"+id);
 
             del.setHeader("content-type", "application/json");
 
@@ -752,7 +822,7 @@ public class Consultar_servicios extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/cambiarestadoservicio/"+variable);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/cambiarestadoservicio/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -777,7 +847,7 @@ public class Consultar_servicios extends Activity {
     private String getdatetimesistema(){
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/HoraFechaSistema/");
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/HoraFechaSistema/");
 
         del.setHeader("content-type", "application/json");
 
@@ -798,72 +868,31 @@ public class Consultar_servicios extends Activity {
         }
         return get;
     }
-   /* private void openAlert(View view) {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+    private String getlatitudlongitud(String id){
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet del =
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/getOrigendestino/"+id);
 
-        alertDialogBuilder.setTitle(this.getTitle() + " decision");
-        alertDialogBuilder.setMessage("Are you sure?");
+        del.setHeader("content-type", "application/json");
 
-        // set positive button: Yes message
+        try
+        {
+            HttpResponse resp = httpClient.execute(del);
+            String respStr = EntityUtils.toString(resp.getEntity());
 
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // go to a new activity of the app
-
-                Intent positveActivity = new Intent(getApplicationContext(),
-
-                        PositiveActivity.class);
-
-                startActivity(positveActivity);
-
-            }
-
-        });
-
-        // set negative button: No message
-
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // cancel the alert box and put a Toast to the user
-
-                dialog.cancel();
-
-                Toast.makeText(getApplicationContext(), "You chose a negative answer",
-
-                        Toast.LENGTH_LONG).show();
-
-            }
-
-        });
-
-        // set neutral button: Exit the app message
-
-        alertDialogBuilder.setNeutralButton("Exit the app", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-
-                // exit the app and go to the HOME
-
-                MainActivity.this.finish();
-
-            }
-
-        });
+            JSONObject respJSON = new JSONObject(respStr);
 
 
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show alert
-
-        alertDialog.show();
-
+            String destino = respJSON.getString("firstName");
+            String origen=respJSON.getString("lastName");
+            get=origen+"&saddr="+destino;
+        }
+        catch(Exception ex)
+        {
+            Log.e("ServicioRest","Error!", ex);
+        }
+        return get;
     }
-*/
 
 }

@@ -34,6 +34,8 @@ public class Incidencias extends Activity {
     private Button btnregistrar;
     private Bundle b;
     private EditText descrip;
+    Ipvariable ip=new Ipvariable();
+    final String ipconfig=ip.direccionIp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +117,7 @@ public class Incidencias extends Activity {
             HttpClient httpClient = new DefaultHttpClient();
 
             HttpGet del =
-                    new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/listaincidencias/");
+                    new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/listaincidencias/");
 
             del.setHeader("content-type", "application/json");
 
@@ -164,7 +166,7 @@ public class Incidencias extends Activity {
     private String getdatetimesistema(){
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/HoraFechaSistema/");
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/HoraFechaSistema/");
 
         del.setHeader("content-type", "application/json");
 
@@ -189,7 +191,7 @@ public class Incidencias extends Activity {
     private int getidincidencia(){
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/idincidencias/");
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/idincidencias/");
 
         del.setHeader("content-type", "application/json");
 
@@ -215,7 +217,7 @@ public class Incidencias extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/insertinc/"+idincidencia+"/zx/"+descripcion+"/cv/1/bn/"+idtipoincidencia+"/ml/"+idservicio+"/kj/"+fechaA+"/ej/"+fechaM);
+                new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/insertinc/"+idincidencia+"/zx/"+descripcion+"/cv/1/bn/"+idtipoincidencia+"/ml/"+idservicio+"/kj/"+fechaA+"/ej/"+fechaM);
 
         del.setHeader("content-type", "application/json");
 

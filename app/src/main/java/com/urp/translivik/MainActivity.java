@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +23,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.StrictMode;
+
+import java.lang.reflect.Type;
+
 public class MainActivity extends Activity {
 
 
@@ -29,6 +34,8 @@ public class MainActivity extends Activity {
     private EditText usuario,password;
     private String id1,id2,get;
     Bundle b;
+    Ipvariable ip=new Ipvariable();
+    final String ipconfig=ip.direccionIp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +106,7 @@ public class MainActivity extends Activity {
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del =
-				new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/getidloginusuario/"+variable);
+				new HttpGet(ipconfig+"/SGSTTSERVICES/service/user/getidloginusuario/"+variable);
 
         del.setHeader("content-type", "application/json");
 
@@ -125,7 +132,7 @@ public class MainActivity extends Activity {
 
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet del =
-                new HttpGet("http://10.0.2.2:8080/SGSTTSERVICES/service/user/getidloginpassword/"+variable);
+                new HttpGet("ipconfig/SGSTTSERVICES/service/user/getidloginpassword/"+variable);
 
         del.setHeader("content-type", "application/json");
 
